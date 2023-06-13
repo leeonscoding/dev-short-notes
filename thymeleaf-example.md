@@ -11,7 +11,7 @@
 * Fill the metadata part as your own
 * Select Dependecies
     * **Spring WEB**(spring-boot-starter-web): Contains Spring MVC and embedded Tomcat container
-    * **Thymeleaf**(spring-boot-starter-thymeleaf): Contains Spring MVC and embedded Tomcat container
+    * **Thymeleaf**(spring-boot-starter-thymeleaf)
 * Click the **GENERATE** Button
 * Copy the compressed file to a desired location
 * Unzip it
