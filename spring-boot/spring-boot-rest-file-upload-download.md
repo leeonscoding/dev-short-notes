@@ -17,7 +17,7 @@
 
 ## Create an abstract storage service
 ```java
-    public interface StorageService {
+public interface StorageService {
     void init();
     String store(MultipartFile file);
     Path getRootPath();
