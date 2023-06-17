@@ -104,3 +104,13 @@ public class EmployeeController {
 }
 ```
 Here I've used the save() and findAll() methods. I've Injected the EmployeeRepository interface using the @Autowired annotation.
+
+## Testing
+* Add an employee
+```bash
+curl -H "Content-Type: application/json" -X "POST" -d '{"name": "test1", "email": "test1@mail.com", "role": "tester"}' http://localhost:8080/add
+```
+* Get all employees
+```bash
+curl http://localhost:8080
+```
