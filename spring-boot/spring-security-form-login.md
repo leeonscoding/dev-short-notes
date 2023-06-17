@@ -1,12 +1,6 @@
 # Integrate Angular in a Spring Boot Project
 
-* Prerequisites
-    * Java
-    * Nodejs
-    * npm
-    * Angular cli
-
-## Add the backend project
+## Initialize the project
 * Go to the start.spring.io [page](https://start.spring.io/ "spring boot project generator")
 * Select
     * **Build Tool**: Gradle - Groovy
@@ -20,34 +14,6 @@
 * Click the **GENERATE** Button
 * Copy the compressed file to a desired location
 * Unzip it
-
-## Add the frontend part
-* Navigate to the path 'src/main' using command line tool
-* Run this command
-    ```bash
-    ng new frontent
-    ```
-    A new folder 'frontend' will be created. It contains the full angular project.
-* Create a proxy file(proxy.conf.json) under 'src/main/frontend/src/'
-* Add this code
-    ```json
-    "/home": {
-        "target": "http://localhost:8080",
-        "secure": false
-    },
-    "/login": {
-        "target": "http://localhost:8080",
-        "secure": false
-    },
-    "/logout": {
-        "target": "http://localhost:8080",
-        "secure": false
-    }
-    ```
-* Go to the angular.json file and navigate projects -> architect -> serve. In serve, modify the "development" section. Add this line.
-    ```json
-       "proxyConfig": "src/proxy.conf.json" 
-    ```
 
 ## Spring Security configuration
 * Create a new class. I've named the class MySecurityConfig. As this is a configuration class, we have to annotate the @Configuration annotation. Also, we need the @EnableWebSecurity annotation. So, we will get the Spring security and its Spring MVC integration support.
