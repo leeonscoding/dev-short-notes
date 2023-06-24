@@ -33,7 +33,7 @@ For registering a client we need the following things
 ## Authorization code
 ### Step-1: Authorization code link
 * The user is given an authrization code link like the following
-  ```http
+  ```bash
   https://cloud.digitalocean.com/v1/oauth/authorize?response_type=code&client_id=CLIENT_ID&redirect_uri=CALLBACK_URL&scope=read
   ```
   This link contains the following
@@ -58,7 +58,7 @@ For registering a client we need the following things
   * authorization code
   * redirect uri
   The request looks like this
-  ```http
+  ```bash
   https://cloud.digitalocean.com/v1/oauth/token?client_id=CLIENT_ID&client_secret=CLIENT_SECRET&grant_type=authorization_code&code=AUTHORIZATION_CODE&redirect_uri=CALLBACK_URL
   ```
 
@@ -89,7 +89,7 @@ If a public client is using the Authorization Code grant type then there is a po
 * The client creates the code challange by hashing the code verifier using code verifier hash method.
 * The client sends this code challange and code challange creation method to the authorization endpoint with the same request.
 Th request may look like this
-  ```http
+  ```bash
   https://authorization-server.com/authorize
   ?client_id=eKNjzFFjH9A1ysYd
   &response_type=code
@@ -111,13 +111,13 @@ This flow is useful for machine to machine applicaions. A system authenticates a
 
 ## Refresh token flow
 After an access token expires, if the user makes a request with the expired token, the resource server will send an invalid access token error. At this point, we can include the refersh token with the api request. We can get a fresh new access token then.
-  ```http
+  ```bash
   https://cloud.digitalocean.com/v1/oauth/token?grant_type=refresh_token&client_id=CLIENT_ID&client_secret=CLIENT_SECRET&refresh_token=REFRESH_TOKEN
   ```
 ## Device code flow
 Used in the limited input option devices where enter text is difficult like TV or video game console.
 * The client(device app) makes a request to the authorization endpoint with the client ID. Usually makes the post request. The device authorization endpoint is different from the authorization server. Because the device authorization endpoint doesn't authenticate the device. Instead it returns a unique device code which is used to identify the device and a user code. With this device code the client makes a request to the authorization server. For example
-  ```http
+  ```bash
   POST https://oauth.example.com/device
 
   client_id=CLIENT_id
