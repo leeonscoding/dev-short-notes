@@ -153,13 +153,13 @@ Once the application has the access token, it can use the token to access the us
   curl -X POST -H "Authorization: Bearer ACCESS_TOKEN""https://api.digitalocean.com/v2/$OBJECT"
   ```
 ## Oauth 2.0 and OIDC
-* Interaction Code flow
+### Interaction Code flow
   ![image from okta developer page](images/1.png)
-* Authorizaiton code flow with PKCE
+### Authorizaiton code flow with PKCE
   ![image from okta developer page](images/2.png)
-* Resource owner passwork flow
+### Resource owner passwork flow
   ![image from okta developer page](images/3.png)
-* Client credential flow
+### Client credential flow
   ![image from okta developer page](images/4.png)
-* SAML 2.0 assertion flow
+### SAML 2.0 assertion flow
   ![image from okta developer page](images/5.png)
