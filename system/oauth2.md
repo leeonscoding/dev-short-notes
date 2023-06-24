@@ -33,7 +33,9 @@ For registering a client we need the following things
 ## Authorization code
 ### Step-1: Authorization code link
 * The user is given an authrization code link like the following
+  ```http
   https://cloud.digitalocean.com/v1/oauth/authorize?response_type=code&client_id=CLIENT_ID&redirect_uri=CALLBACK_URL&scope=read
+  ```
   This link contains the following
   * **Authorization endpoint**: https://cloud.digitalocean.com/v1/oauth/authorize
   * **response_type**: code indicates that this is a authorization code grant/flow.
@@ -56,11 +58,26 @@ For registering a client we need the following things
   * authorization code
   * redirect uri
   The request looks like this
+  ```http
   https://cloud.digitalocean.com/v1/oauth/token?client_id=CLIENT_ID&client_secret=CLIENT_SECRET&grant_type=authorization_code&code=AUTHORIZATION_CODE&redirect_uri=CALLBACK_URL
+  ```
 
 ### Step-5: Client/application receives an access token
 * If the authorization is valid, the authorization server will send a response along with access token and refresh token.
-  {"access_token":"ACCESS_TOKEN","token_type":"bearer","expires_in":2592000,"refresh_token":"REFRESH_TOKEN","scope":"read","uid":100101,"info":{"name":"Mark E. Mark","email":"mark@thefunkybunch.com"}}
+  ```json
+  {
+    "access_token":"ACCESS_TOKEN",
+    "token_type":"bearer",
+    "expires_in":2592000,
+    "refresh_token":"REFRESH_TOKEN",
+    "scope":"read",
+    "uid":100101,
+    "info": {
+        "name":"Mark E. Mark",
+        "email":"mark@thefunkybunch.com"
+      }
+    }
+  ```
 
 ### Proof key for Code Exchange
 If a public client is using the Authorization Code grant type then there is a possibility to intercept the authorization code. The Proof key for code exchange(PKCE or pixie) is an extension in this flow to mitigate this kind of attack. This is a cryptographycally random string. This is a base64 url encoded string of a sha-256 hash of the code verifier. So that the original random string is never exposed.
@@ -72,6 +89,7 @@ If a public client is using the Authorization Code grant type then there is a po
 * The client creates the code challange by hashing the code verifier using code verifier hash method.
 * The client sends this code challange and code challange creation method to the authorization endpoint with the same request.
 Th request may look like this
+  ```http
   https://authorization-server.com/authorize
   ?client_id=eKNjzFFjH9A1ysYd
   &response_type=code
@@ -80,6 +98,7 @@ Th request may look like this
   &scope=photos
   &code_challenge=hKpKupTM381pE10yfQiorMxXarRKAHRhTfH_xkGf7U4
   &code_challenge_method=S256
+  ```
 * The auth server then sends a prompt to the user for authorization. If the user authorize then the auth server sends a authorization code to the redirect_uri. As the user sends the code challange and method, it stores those info.
 * The client then send this authorization code along with the code challange and the code challange method to the auth server for an exchange of access token.
 * Since the auth server records the code verifier it can easily verify it using the code challange and method.
@@ -91,7 +110,56 @@ This flow is useful for machine to machine applicaions. A system authenticates a
 * The auth server then verifies those and returns an access token.
 
 ## Refresh token flow
-
+After an access token expires, if the user makes a request with the expired token, the resource server will send an invalid access token error. At this point, we can include the refersh token with the api request. We can get a fresh new access token then.
+  ```http
+  https://cloud.digitalocean.com/v1/oauth/token?grant_type=refresh_token&client_id=CLIENT_ID&client_secret=CLIENT_SECRET&refresh_token=REFRESH_TOKEN
+  ```
 ## Device code flow
+Used in the limited input option devices where enter text is difficult like TV or video game console.
+* The client(device app) makes a request to the authorization endpoint with the client ID. Usually makes the post request. The device authorization endpoint is different from the authorization server. Because the device authorization endpoint doesn't authenticate the device. Instead it returns a unique device code which is used to identify the device and a user code. With this device code the client makes a request to the authorization server. For example
+  ```http
+  POST https://oauth.example.com/device
+
+  client_id=CLIENT_id
+  ```
+
+* The authorization server responds with the following
+  * device code
+  * user code
+  * verification uri
+  * verification uri complete
+  * expires in
+  * For example,
+  ```json
+  {
+    "device_code": "IO2RUI3SAH0IQuESHAEBAeYOO8UPAI",
+    "user_code": "RSIK-KRAM",
+    "verification_uri": "https://example.okta.com/device",
+    "interval": 10,
+    "expires_in": 1600
+  }
+  ```
+* The user then accomplish the authorization using another machine which is easier to authenticate like laptop or pc or mobile. This can be done by one of the following
+  * Visit the verification uri and enter the user code
+  * Scan QR code or shorened URL embedded with user code generated from the verificaion uri complete
+  * Directly navigating to the verfication page with embedded user code using verification uri complete, if running natively on a browser based device.
+* The device app starts polling the authorization server for an access token using the time period specified by the interval. The device app continues polling until the user completes the browser flow path or code expires.
+* When the user completes the browser flow path the auth server returns an access token and optionally a referesh token. The device app will forget the device code as it's expired now.
+* The device app then use the access code to access resources.
 
 ## How to use the access token
+Once the application has the access token, it can use the token to access the user's with the request's header like the following
+  ```bash
+  curl -X POST -H "Authorization: Bearer ACCESS_TOKEN""https://api.digitalocean.com/v2/$OBJECT"
+  ```
+## Oauth 2.0 and OIDC
+* Interaction Code flow
+  ![image from okta developer page](images/1.png)
+* Authorizaiton code flow with PKCE
+  ![image from okta developer page](images/2.png)
+* Resource owner passwork flow
+  ![image from okta developer page](images/3.png)
+* Client credential flow
+  ![image from okta developer page](images/4.png)
+* SAML 2.0 assertion flow
+  ![image from okta developer page](images/5.png)
