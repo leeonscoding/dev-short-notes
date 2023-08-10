@@ -478,5 +478,3 @@ For delete
 	postRepository.save(post1);
 ```
 
-# Self referencing association
-
