@@ -1,3 +1,7 @@
+# Dependencies
+* Starter JPA
+* PostgreSQL Driver
+* Lombok
 # Modify application.yaml
 ```yaml
 spring:
