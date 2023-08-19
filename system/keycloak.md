@@ -74,7 +74,7 @@ Go to Realm settings -> General
 
 Click Endpoints -> OpenID Endpoint Configuration
 
-![keycloak](keycloak-images/8.png)
+![keycloak](keycloak-images/9.png)
 
 We can see those info in a json format.
 ```json
