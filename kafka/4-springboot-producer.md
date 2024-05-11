@@ -1,8 +1,11 @@
 ## application.properties/application.yaml configuration
 ```yaml
+server:
+  port: 3001
 spring:
   kafka:
-    bootstrap-servers: "localhost:9092"
+    producer:
+      bootstrap-servers: "localhost:9092"
 ```
 
 ## create a new topic with partition and replication factor if needed. create a package config and add a java class called KafkaConfig
